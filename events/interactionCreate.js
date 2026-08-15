@@ -43,7 +43,7 @@ module.exports = {
 
     // 3. Menangani Interaksi Select Menu
     if (interaction.isStringSelectMenu()) {
-      if (interaction.customId === "role_select_menu") {
+      if (interaction.customId === "role_select_menu" || interaction.customId === "role_select_notif") {
         const { handleRoleSelectInteraction } = require("../utils/roleHandler");
         await handleRoleSelectInteraction(interaction);
       }

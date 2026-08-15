@@ -1,21 +1,29 @@
 async function handleRoleSelectInteraction(interaction) {
-  if (interaction.customId === "role_select_menu") {
+  if (interaction.customId === "role_select_menu" || interaction.customId === "role_select_notif") {
     await interaction.deferReply({ flags: 64 });
 
     const selectedValues = interaction.values;
     const member = interaction.member;
 
-    const roleMap = {
-      role_survival_earth: process.env.ROLE_SURVIVAL_EARTH,
-      role_coming_soon: process.env.ROLE_COMING_SOON
-    };
+    let roleMap = {};
+
+    if (interaction.customId === "role_select_menu") {
+      roleMap = {
+        role_survival_earth: process.env.ROLE_SURVIVAL_EARTH,
+        role_coming_soon: process.env.ROLE_COMING_SOON
+      };
+    } else if (interaction.customId === "role_select_notif") {
+      roleMap = {
+        role_notif_social: process.env.ROLE_NOTIF_SOCIAL
+      };
+    }
 
     let addedRoles = [];
     let removedRoles = [];
     let errors = [];
 
     for (const [key, roleId] of Object.entries(roleMap)) {
-      if (!roleId || roleId === "masukkan_id_role_survival_disini" || roleId === "masukkan_id_role_coming_soon_disini") {
+      if (!roleId || roleId.includes("masukkan_id_role_")) {
         continue; // Role belum di set di .env
       }
 
