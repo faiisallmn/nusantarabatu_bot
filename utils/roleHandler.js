@@ -10,11 +10,11 @@ async function handleRoleSelectInteraction(interaction) {
     if (interaction.customId === "role_select_menu") {
       roleMap = {
         role_survival_earth: process.env.ROLE_SURVIVAL_EARTH,
-        role_coming_soon: process.env.ROLE_COMING_SOON
+        role_coming_soon: process.env.ROLE_COMING_SOON,
       };
     } else if (interaction.customId === "role_select_notif") {
       roleMap = {
-        role_notif_social: process.env.ROLE_NOTIF_SOCIAL
+        role_notif_social: process.env.ROLE_NOTIF_SOCIAL,
       };
     }
 
@@ -51,11 +51,11 @@ async function handleRoleSelectInteraction(interaction) {
       }
     }
 
-    let responseMsg = "✅ **Roles telah diperbarui!**\n";
-    if (addedRoles.length > 0) responseMsg += `➕ Ditambahkan: ${addedRoles.join(", ")}\n`;
-    if (removedRoles.length > 0) responseMsg += `➖ Dihapus: ${removedRoles.join(", ")}\n`;
+    let responseMsg = "**Roles telah diperbarui!**\n";
+    if (addedRoles.length > 0) responseMsg += `✅ Ditambahkan: ${addedRoles.join(", ")}\n`;
+    if (removedRoles.length > 0) responseMsg += `❌ Dihapus: ${removedRoles.join(", ")}\n`;
     if (addedRoles.length === 0 && removedRoles.length === 0) responseMsg += "Tidak ada perubahan role.";
-    
+
     if (errors.length > 0) {
       responseMsg += `\n⚠️ **Peringatan:**\n${errors.join("\n")}`;
     }

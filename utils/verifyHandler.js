@@ -43,6 +43,13 @@ async function handleVerifyInteraction(interaction) {
       if (memberInCurrent) {
         await memberInCurrent.roles.add(verifiedRoleId);
         
+        const unverifiedRoleId = process.env.UNVERIFIED_ROLE_ID;
+        if (unverifiedRoleId && unverifiedRoleId !== "masukkan_id_role_not_verified_disini") {
+            if (memberInCurrent.roles.cache.has(unverifiedRoleId)) {
+                await memberInCurrent.roles.remove(unverifiedRoleId).catch(console.error);
+            }
+        }
+        
         const successEmbed = new EmbedBuilder()
           .setTitle("✅ Verifikasi Berhasil")
           .setDescription("Terima kasih telah bergabung di Motion Ime! Anda sekarang memiliki akses ke semua channel di server ini.")
