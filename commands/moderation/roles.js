@@ -24,7 +24,7 @@ module.exports = {
 
       const embed = new EmbedBuilder()
         .setTitle("Games Catalog")
-        .setDescription("Silahkan pilih roles sesuai dengan keinginan kamu untuk mengakses channel yang tersedia dibawah sini!\n\n🌍 | **Survival Earth**\n🔒 | **Coming Soon**")
+        .setDescription("Silahkan pilih roles sesuai dengan keinginan kamu untuk mengakses channel yang tersedia dibawah sini!\n\n🌍 | **Survival Earth**\n🧊 | **OneBlock**")
         .setColor("#2b2d31")
         .setImage("attachment://gamemode_banner.png");
 
@@ -40,10 +40,10 @@ module.exports = {
             .setEmoji("🌍")
             .setDescription("Akses channel Survival Earth"),
           new StringSelectMenuOptionBuilder()
-            .setLabel("Coming Soon")
-            .setValue("role_coming_soon")
-            .setEmoji("🔒")
-            .setDescription("Akses channel rahasia yang akan datang")
+            .setLabel("OneBlock")
+            .setValue("role_oneblock")
+            .setEmoji("🧊")
+            .setDescription("Akses channel OneBlock")
         );
 
       const row = new ActionRowBuilder().addComponents(select);

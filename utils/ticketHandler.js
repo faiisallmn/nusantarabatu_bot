@@ -23,15 +23,36 @@ async function handleTicketInteraction(interaction) {
       .setCustomId("ticket_modal")
       .setTitle("Buka Ticket Baru");
 
-    const reasonInput = new TextInputBuilder()
-      .setCustomId("ticket_reason")
-      .setLabel("Alasan membuka tiket?")
-      .setPlaceholder("Jelaskan masalah atau keperluan Anda secara singkat")
-      .setStyle(TextInputStyle.Paragraph)
+    const nameInput = new TextInputBuilder()
+      .setCustomId("ticket_name")
+      .setLabel("Nama")
+      .setPlaceholder("Masukkan nama / in-game name Anda")
+      .setStyle(TextInputStyle.Short)
+      .setMaxLength(100)
       .setRequired(true);
 
-    const row = new ActionRowBuilder().addComponents(reasonInput);
-    modal.addComponents(row);
+    const platformInput = new TextInputBuilder()
+      .setCustomId("ticket_platform")
+      .setLabel("Versi Minecraft")
+      .setPlaceholder("Ketik: Java atau Bedrock")
+      .setValue("Java")
+      .setStyle(TextInputStyle.Short)
+      .setMaxLength(20)
+      .setRequired(true);
+
+    const messageInput = new TextInputBuilder()
+      .setCustomId("ticket_message")
+      .setLabel("Alasan membuka ticket")
+      .setPlaceholder("Jelaskan masalah atau keperluan Anda secara detail")
+      .setStyle(TextInputStyle.Paragraph)
+      .setMaxLength(3900)
+      .setRequired(true);
+
+    modal.addComponents(
+      new ActionRowBuilder().addComponents(nameInput),
+      new ActionRowBuilder().addComponents(platformInput),
+      new ActionRowBuilder().addComponents(messageInput),
+    );
 
     await interaction.showModal(modal);
     return;
@@ -41,7 +62,15 @@ async function handleTicketInteraction(interaction) {
   if (customId === "ticket_modal" && interaction.isModalSubmit()) {
     await interaction.deferReply({ flags: 64 });
     
-    const reason = interaction.fields.getTextInputValue("ticket_reason");
+    const name = interaction.fields.getTextInputValue("ticket_name");
+    const rawPlatform = interaction.fields.getTextInputValue("ticket_platform");
+    const message = interaction.fields.getTextInputValue("ticket_message");
+
+    // Normalisasi versi Minecraft: terima "java", "bedrock", "be", "pe", dll.
+    const normalized = rawPlatform.toLowerCase().trim();
+    const platform = normalized.includes("bedrock") || normalized === "be" || normalized === "pe"
+      ? "Bedrock Edition"
+      : "Java Edition";
     const categoryId = process.env.TICKET_CATEGORY_ID;
     const adminRoleId = process.env.ADMIN_ROLE_ID;
     const guardianRoleId = process.env.GUARDIAN_ROLE_ID;
@@ -135,7 +164,15 @@ async function handleTicketInteraction(interaction) {
 
       const embed = new EmbedBuilder()
         .setTitle(`🎫 Tiket Baru: ${user.username}`)
-        .setDescription(`Halo ${user}!\nTim <@&${adminRoleId}> / <@&${guardianRoleId}> akan segera merespons tiket Anda.\n\n**Alasan:**\n\`\`\`${reason}\`\`\``)
+        .setDescription(
+          `Halo ${user}!\n` +
+          `Tim <@&${adminRoleId}> / <@&${guardianRoleId}> akan segera merespons tiket Anda.\n\n` +
+          `**📝 Alasan membuka ticket:**\n${message}`
+        )
+        .addFields(
+          { name: "👤 Nama", value: name, inline: true },
+          { name: "🎮 Versi Minecraft", value: platform, inline: true },
+        )
         .setColor("#00ff00")
         .setTimestamp();
 

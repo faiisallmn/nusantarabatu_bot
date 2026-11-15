@@ -10,7 +10,7 @@ async function handleRoleSelectInteraction(interaction) {
     if (interaction.customId === "role_select_menu") {
       roleMap = {
         role_survival_earth: process.env.ROLE_SURVIVAL_EARTH,
-        role_coming_soon: process.env.ROLE_COMING_SOON,
+        role_oneblock: process.env.ROLE_ONEBLOCK
       };
     } else if (interaction.customId === "role_select_notif") {
       roleMap = {
