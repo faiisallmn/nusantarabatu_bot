@@ -38,6 +38,12 @@ module.exports = {
         await handleTicketInteraction(interaction);
       } else if (interaction.customId.startsWith("verify_")) {
         await handleVerifyInteraction(interaction);
+      } else if (interaction.isModalSubmit() && interaction.customId === "announce_modal") {
+        const announceCommand = client.commands.get("announce");
+        await announceCommand.handleModalSubmit(interaction);
+      } else if (interaction.isModalSubmit() && interaction.customId === "update_modal") {
+        const updateCommand = client.commands.get("update");
+        await updateCommand.handleModalSubmit(interaction);
       }
     }
 
